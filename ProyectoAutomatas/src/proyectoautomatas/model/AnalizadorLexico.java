@@ -145,7 +145,7 @@ public class AnalizadorLexico  {
         	
         	
             if(!phrase[i].equals("null") && phrase[i].length() != 0){
-                System.out.println("Remains: "+phrase[i].length());
+                //System.out.println("Remains: "+phrase[i].length());
                 lexemasTemp += phrase[i]+ " - ";
             }
             	

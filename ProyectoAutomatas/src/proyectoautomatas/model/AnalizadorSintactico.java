@@ -43,7 +43,7 @@ public class AnalizadorSintactico {
         Boolean valido = true;
         int cont = 0;
         Tabla tabla2 = new Tabla();
-        System.out.println("|Pila\t\t\t\t\t\t\t|Entrada\t\t\t\t\t\t\t|Salida de la Tabla2");
+        //System.out.println("|Pila\t\t\t\t\t\t\t|Entrada\t\t\t\t\t\t\t|Salida de la Tabla2");
         
         
         while(!pila.isEmpty() && valido && !pilaEntrada.isEmpty()){
@@ -66,7 +66,7 @@ public class AnalizadorSintactico {
             }else {
             	if(isTerminal(pila.peek())) {
             		//System.out.println("Proceso 2 65 pila.peek() "+pila.peek()+" es terminal"+pila);
-            		System.out.println("66"+pila+"\t\t\t|"+pilaEntrada);
+            		//System.out.println("66"+pila+"\t\t\t|"+pilaEntrada);
                         
                     if(!comparar(pila.peek(), pilaEntrada.peek())) {
                     	break;
@@ -74,7 +74,7 @@ public class AnalizadorSintactico {
             	}else {
             		String produccion = tabla2.getProduccion(pila.peek(), token);
             		//System.out.println("proceso line 55 --> Produccion obtenida :"+produccion);
-            		System.out.println("75"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|"+produccion);
+            		//System.out.println("75"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|"+produccion);
                     if(produccion.equals("none") || produccion.equals("no produccion found"))
                     	break;
                     
@@ -281,9 +281,9 @@ public class AnalizadorSintactico {
             System.out.println("Error... entrada no valida "+pilaEntrada);
             isValid = false;
         }else if(pilaEntrada.isEmpty() && pila.peek().equals("RESTOC")) {
-            System.out.println("57"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|RESTOC-->E");
+            //System.out.println("57"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|RESTOC-->E");
             pila.pop();
-            System.out.println("57"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|");
+            //System.out.println("57"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|");
             System.out.println("Entrada valida "+pila+"\t"+pilaEntrada);
                
             isValid = true;
