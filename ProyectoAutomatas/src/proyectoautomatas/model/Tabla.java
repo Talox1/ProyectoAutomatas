@@ -109,7 +109,7 @@ public class Tabla {
     }
 
     public String getProduccion(String noTerminal, String terminal){
-    	System.out.println("Tabla line 102  recibidos No terminal="+noTerminal+ " Terminal="+terminal+" is empty?: "+terminal.isEmpty());
+    	//System.out.println("Tabla line 102  recibidos No terminal="+noTerminal+ " Terminal="+terminal+" is empty?: "+terminal.isEmpty());
         String produccion = new String();
         boolean flag = false;
         for (int i = 1; i < 18; i++){

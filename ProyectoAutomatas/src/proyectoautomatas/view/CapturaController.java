@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,9 +27,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import proyectoautomatas.ProyectoAutomatas;
+import proyectoautomatas.model.AnalizadorLexico;
+import proyectoautomatas.model.AnalizadorSintactico;
 
 public class CapturaController {
     String entrada;
+    String noWordDiccionary = "";
     @FXML
     private TextArea entradaTexto;
     @FXML
@@ -44,7 +49,22 @@ public class CapturaController {
 
     @FXML
     void OnMouseClickedEvaluar(MouseEvent event) {
+        //grafico : { [ cargaP : x: 10 ; y: 20 ; color: blue ; ] , [ cargaP : x: 40 ; y: 10 ; color: red ; ] } , carga : { x: 20 ; y: 3 ; v: 4 ; t: - ; n: nC ;  color: blue ; }
+        if(entradaTexto.getText().length() > 0){
+            String entrada = limpiarCadena(entradaTexto.getText());
+            System.out.println(entrada);
+            if(isLexemaValid(entrada)){
+                System.out.println("Lexema valido");
+                if(isSintacticoValid(entrada)){
 
+                    System.out.println("Sintactico valido");
+                }
+            }else{
+                System.out.println("Lexema no valido");
+                System.out.println("Palabras no encontradas en el diccinario: "+noWordDiccionary);
+            }
+        }
+        
     }
 
     @FXML
@@ -98,4 +118,48 @@ public class CapturaController {
     public void setEntradaTexto(String entradaTexto){
         this.entrada = entradaTexto; 
    }
+    
+    private boolean isLexemaValid(String entrada){
+        boolean isLexemaValid = false;
+        
+        Queue<String> queueLexemas = new LinkedList<String>();
+        
+        System.out.println("134 >> captura controller: "+entrada);
+        AnalizadorLexico analizadorLexico = new AnalizadorLexico(entrada);
+        queueLexemas = analizadorLexico.getLexemas();
+
+        System.out.println(queueLexemas);
+        while(!queueLexemas.isEmpty()) { 
+
+            if(queueLexemas.size() == 1){
+                System.out.println("Evaluando palabras que no estan en el diccionario");
+                if(queueLexemas.peek().length() == 0){
+                    //System.out.println("Entrada valida");
+                    isLexemaValid = true;
+                }else{
+                    isLexemaValid = false;
+                    noWordDiccionary = queueLexemas.peek();
+                }
+            }
+            queueLexemas.poll();
+            
+            
+
+        }
+        
+        
+        return isLexemaValid;
+    }
+    
+    
+    public boolean isSintacticoValid(String entrada){
+        boolean isSintacticoValid = false;
+        AnalizadorSintactico analizadorSintactico = new AnalizadorSintactico(entrada);
+        analizadorSintactico.start();
+        isSintacticoValid = analizadorSintactico.isEntradaValid();
+        return isSintacticoValid;
+    }
+    public String limpiarCadena(String cadena) {
+        return cadena.replaceAll("\n", "").replaceAll("\t", ""); 
+    }
 }

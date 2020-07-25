@@ -144,8 +144,11 @@ public class AnalizadorLexico  {
         for(int i = 0; i < phrase.length; i++){
         	
         	
-            if(!phrase[i].equals("null"))
-            	lexemasTemp += phrase[i]+ " - ";
+            if(!phrase[i].equals("null") && phrase[i].length() != 0){
+                System.out.println("Remains: "+phrase[i].length());
+                lexemasTemp += phrase[i]+ " - ";
+            }
+            	
         }
         queueLexemas.add(lexemasTemp);
         lexemasTemp = "";

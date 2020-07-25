@@ -53,7 +53,10 @@
                   <Font name="Segoe UI Bold" size="17.0" />
                </font>
             </Label>
-            <TextArea fx:id="entradaTexto" layoutX="14.0" layoutY="61.0" prefHeight="479.0" prefWidth="793.0" />
+            <TextArea fx:id="entradaTexto" layoutX="14.0" layoutY="61.0" prefHeight="479.0" prefWidth="793.0">
+               <font>
+                  <Font size="24.0" />
+               </font></TextArea>
             <Button fx:id="btnImportar" layoutX="814.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#OnMouseClickedImportar" prefHeight="49.0" prefWidth="87.0" text="Importar" />
             <Button fx:id="btnEvaluar" layoutX="814.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#OnMouseClickedEvaluar" prefHeight="49.0" prefWidth="87.0" text="Evaluar" />
          </children>
