@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root2" prefHeight="699.0" prefWidth="1111.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoautomatas.view.GraficoController">
+<AnchorPane id="AnchorPane" fx:id="root2" prefHeight="717.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proyectoautomatas.view.GraficoController">
    <children>
-      <Pane layoutY="-6.0" prefHeight="161.0" prefWidth="1111.0" style="-fx-background-color: #39A67F;">
+      <Pane layoutY="-6.0" prefHeight="161.0" prefWidth="1175.0" style="-fx-background-color: #39A67F;">
          <children>
             <ImageView layoutX="23.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -45,7 +45,7 @@
             </Label>
          </children>
       </Pane>
-      <AnchorPane layoutX="175.0" layoutY="112.0" prefHeight="560.0" prefWidth="909.0" style="-fx-background-color: #a7dac7;">
+      <AnchorPane fx:id="anchorPane" layoutX="175.0" layoutY="100.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #a7dac7;">
          <children>
             <Label layoutX="28.0" layoutY="22.0" text="Grafico" textFill="#39a67f">
                <font>

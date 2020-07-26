@@ -7,8 +7,8 @@ package proyectoautomatas.model;
 
 public class Carga{
    private double valor;
-   private double posX;
-   private double posY;
+   private int posX;
+   private int posY;
    private String color;
    private String tipo;
    private String nomenclatura;
@@ -16,30 +16,41 @@ public class Carga{
    private boolean isRange = false;
    public Carga(){}
 
-   public Carga(double valor, double posX, double posY){
+   public Carga(int valor, int posX, int posY){
       this.valor = valor;
       this.posX = posX;
       this.posY = posY;
    }
 
    public void setValor(double valor){
-      this.valor = valor;
+        if(tipo.equals("carga")){
+            if(signo.equals("-")){
+                valor = valor * -1;
+            }
+            if(nomenclatura.equals("nC"))
+                this.valor = valor * Math.pow(10,-9);
+            else if (nomenclatura.equals("mC"))
+                this.valor = valor * Math.pow(10,-6);
+            else 
+                  this.valor = valor;
+        }else
+          this.valor = valor;
    }
    public double getValor(){
       return valor;
    }
 
-   public void setPosX(double posX){
+   public void setPosX(int posX){
       this.posX = posX;
    }
-   public double getPosX(){
+   public int getPosX(){
       return posX;
    }
 
-   public void setPosY(double posY){
+   public void setPosY(int posY){
       this.posY = posY;
    }
-   public double getPosY(){
+   public int getPosY(){
       return posY;
    }
 

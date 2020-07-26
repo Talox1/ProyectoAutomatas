@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import javafx.fxml.FXML;
@@ -32,6 +33,10 @@ import proyectoautomatas.model.*;
 public class CapturaController {
     String entrada;
     String noWordDiccionary = "";
+    Queue<Carga> listaCargas = new LinkedList<Carga>();
+    
+    private double [][] matrizCampoElectrico ;
+    
     @FXML
     private TextArea entradaTexto;
     @FXML
@@ -47,9 +52,9 @@ public class CapturaController {
     private Button btnEvaluar;
 
     @FXML
-    void OnMouseClickedEvaluar(MouseEvent event) {
+    void OnMouseClickedEvaluar(MouseEvent event) throws IOException {
         //grafico : { [ cargaP : x: 10 ; y: 20 ; color: blue ; ] , [ cargaP : x: 40 ; y: 10 ; color: red ; ] } , carga : { x: 20 ; y: 3 ; v: 4 ; t: - ; n: nC ;  color: blue ; }
-        Queue<Carga> listaCargas = new LinkedList<Carga>();
+        
         if(entradaTexto.getText().length() > 0){
             String entrada = limpiarCadena(entradaTexto.getText());
             //System.out.println(entrada);
@@ -61,18 +66,16 @@ public class CapturaController {
                     //String entrada = "grafico : { [ cargaP : x: 10 ; y: 20 ; color: blue ; ] , [ cargaP : x: 40 ; y: 10 ; color: red ; ] } , carga : { x: 20 ; y: 3 ; v: 4 ; t: - ; n: nC ;  color: blue ; } , carga : { x: 20 ; y: 3 ; v: 4 ; t: + ; n: nC ; color: blue ; }";
                     AnalizadorSemantico analizadorSemantico = new AnalizadorSemantico(entrada);
                     analizadorSemantico.identificarDatos();
-
                     listaCargas = analizadorSemantico.getListCargas();
-                    int contador =1 ;
-                    while(!listaCargas.isEmpty()){
-                        System.out.println("Carga n°: "+contador+" tipo: "+listaCargas.peek().getTipo());
-                        System.out.println("\tX: "+listaCargas.peek().getPosX()+" Y: "+listaCargas.peek().getPosY()+" color: "+listaCargas.peek().getColor());
-                        if(listaCargas.peek().getTipo().equals("carga")){
-                            System.out.println("\tv: "+listaCargas.peek().getValor()+" t: "+listaCargas.peek().getSigno()+" nomenclatura: "+listaCargas.peek().getNomenclatura()+" color: "+listaCargas.peek().getColor());
-                        }
-                        listaCargas.poll();
-                        contador ++;
-                    }
+                    
+                    
+                    CampoElectrico campoElectrico = new CampoElectrico();
+                    campoElectrico.setCargas(listaCargas);
+                    campoElectrico.crearCampoElectrico();
+                    this.matrizCampoElectrico = campoElectrico.getInfoCampoElectrico();
+                    System.out.println("captura controller "+listaCargas);
+                    OnMouseClickedGrafico(event);
+                    
                 }
             }else{
                 System.out.println("Lexema no valido");
@@ -89,8 +92,11 @@ public class CapturaController {
         Object carga = loader.load();
         Parent root = (Parent) carga;
         Scene scene = new Scene(root);            
-        GraficoController controller = loader.<GraficoController>getController();
-        controller.setEntradaTexto(entradaTexto.getText());
+        GraficoController graficoController = loader.<GraficoController>getController();
+//        graficoController.setEntradaTexto(entradaTexto.getText());
+        graficoController.setInfoCampoElectrico(matrizCampoElectrico);
+        graficoController.setListaCargas(listaCargas);
+        graficoController.dibujarCargas();
         stage.setScene(scene);
         stage.show();                                                                   
         Stage stage1 = (Stage) btnEvaluar.getScene().getWindow();

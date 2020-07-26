@@ -16,22 +16,23 @@ import java.util.Scanner;
  */
 public class CampoElectrico {
     private Queue<Carga> listaCargas = new LinkedList<Carga>();
-     
+    private double [][] campoElectrico ;
     public void crearCampoElectrico(){
         
-
-        
+        EscribirArchivo archivo = new EscribirArchivo();
+        String fileName="Datos.xls";
+        String rutaArchivo= "C:\\Users\\talob\\Desktop\\IDS\\8cuatri\\Compiladores\\3 corte\\ProyectoAutomatas\\ProyectoAutomatas\\src"+fileName;
         
         double [] arrayCargas;
         Carga carga;
-        int x1 = 200; 
-        int x2 = 1100;;
-        int y1 = 130;
-        int y2 = 650;
+        int x1 = 175; 
+        int x2 = 1175;
+        int y1 = 100;
+        int y2 = 700;
         
         int longitudX, longitudY; //longitudes del campoMagnetico
 
-        double [][]campoElectrico;
+        
         double saltosX, saltosY, puntosMediosX, puntosMediosY;
         double compX, compY, distancia, compXTotal=0, compYTotal=0;
         double fuerzaResultante ;
@@ -41,7 +42,7 @@ public class CampoElectrico {
         
         int numCargas = listaCargas.size();              //numero de cargas repartidas en el campo electrico
         //arrayCargas = new double [numCargas];       //inicializar tamaño del arrray
-        int numDivisiones = 100; 
+        int numDivisiones = 200; 
         
         campoElectrico = new double [numDivisiones][numDivisiones];    //declaracion tamaño de la matriz
 
@@ -56,14 +57,16 @@ public class CampoElectrico {
         puntosMediosX = saltosX/2;
         puntosMediosY = saltosY/2;
         System.out.println("Puntos medios X,Y: "+puntosMediosX+": "+puntosMediosY);
-        String opcion = "s"; //para ver los datos de salida
+        String opcion = "n"; //para ver los datos de salida
         
         double auxY = y2 - puntosMediosY;
         for(int i = 0; i < numDivisiones; i++){//desde el inicio de y
-           double auxX = x1 + puntosMediosX;   
-           for(int j = 0; j < numDivisiones; j++){//desde el inicio de x
-              // System.out.println(i+":"+j);
+            double auxX = x1 + puntosMediosX;   
+            for(int j = 0; j < numDivisiones; j++){//desde el inicio de x
+                // System.out.println(i+":"+j);
                 for (Carga auxCarga : listaCargas) {//hacer los calculos para todas las cargas, obtener todas las cargas
+                    //System.out.println("Carga X:"+auxCarga.getPosX()+" y: "+auxCarga.getPosY());
+                    //System.out.println("Punto medio X: "+auxX+" Y:_ "+auxY);
                     if(auxX > auxCarga.getPosX()){ //si la posicion en x del punto medio es mayor a la posicion x de la carga, 
                         catetoX = auxX - auxCarga.getPosX();//entonces resto 
                     }else{
@@ -75,7 +78,7 @@ public class CampoElectrico {
                        catetoY = auxCarga.getPosY() - auxY;
                     }
                     distancia = Math.hypot(catetoX, catetoY)/100;
-            /*UNA VEZ TENIENDO LA DISTANCIA SE REALIZA LA FORMULA F = KQ/r^2 */
+                 /*UNA VEZ TENIENDO LA DISTANCIA SE REALIZA LA FORMULA F = KQ/r^2 */
                     double fuerzaCampo = Math.abs( (8.99 * Math.pow(10, 9)) *auxCarga.getValor() ) /Math.pow(distancia, 2); 
 
                     //para saber el angulo de la fuerza, este angulo me va a servir para saber las componenetes de las fuerzas para despues
@@ -105,11 +108,11 @@ public class CampoElectrico {
                         if(auxCarga.getValor()<0){//si la carga es negativa
                         compY = ( fuerzaCampo * Math.sin(angulo));//la componente es negativa
                         }else{
-                            compY = ( fuerzaCampo * Math.sin(angulo) * -1);
-                        }
-                    }
-                           /*AQUI ME QUEDE, FALTA CALCULAR LAS COMPONENESTE DE LAS FUERZAS PARA DESPUES HACER LAS SUMATORIAS
-                           Y CALCULAR LA FUERZA RESULTANTE */
+                                 compY = ( fuerzaCampo * Math.sin(angulo) * -1);
+                             }
+                         }
+                                /*AQUI ME QUEDE, FALTA CALCULAR LAS COMPONENESTE DE LAS FUERZAS PARA DESPUES HACER LAS SUMATORIAS
+                                Y CALCULAR LA FUERZA RESULTANTE */
                     compXTotal = compXTotal + compX;
                     compYTotal = compYTotal + compY;
 
@@ -125,24 +128,38 @@ public class CampoElectrico {
                         System.out.println("Sumatoria Componente X: "+compXTotal+"\nSumatoria Componente Y: "+compYTotal);
                         System.out.println("\nfuerza resultante: "+fuerzaResultante+" NC");
                     }
-                // compX = fuerzaCampo * Math.
-            }//end of foreach
-            compXTotal = 0;//se resetea los valores
-            compYTotal = 0;
-            auxX += saltosX;
-        }//end of bucle for j
-        auxY -= saltosY;
-    }//end of bucle for i
-
+                     // compX = fuerzaCampo * Math.
+                }//end of foreach
+                compXTotal = 0;//se resetea los valores
+                compYTotal = 0;
+                auxX += saltosX;
+             }//end of bucle for j
+             auxY -= saltosY;
+        }//end of bucle for i
+        
+        Scanner sc = new Scanner(System.in);
+         do{
+            System.out.println("Introduzca nombre del archivo");
+            fileName = sc.next();
+        }while(fileName.equals("Datos"));
+        fileName+=".xls";
+        archivo.CreateExcel(fileName, campoElectrico);
+        sc.close();
     }
         
-    }
 
 
 
     public void setCargas(Queue<Carga> listaCargas){
-        
         this.listaCargas = listaCargas;
-   }
+    }
+    
+    public double [][] getInfoCampoElectrico(){
+        return campoElectrico;
+        
+        
+    }
+
+   
    
 }//end of class Main

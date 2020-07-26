@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package proyectoautomatas.model;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 /**
@@ -60,14 +61,16 @@ public class AnalizadorSemantico {
         //System.out.println("=====================================");
         String [] cargas =cargaP.split(";");
         Carga carga = new Carga();
+        carga.setTipo("cargaP");
         /*for (int i = 0; i < cargas.length; i++){
             System.out.println(cargas[i].replace("x:", "").replace("y:", "").replace("color:", ""));
         }*/
         carga.setPosX(Integer.parseInt(cargas[0].replace("x:", "").replace("y:", "").replace("color:", "")));
         carga.setPosY(Integer.parseInt(cargas[1].replace("x:", "").replace("y:", "").replace("color:", "")));
         carga.setColor(cargas[2].replace("x:", "").replace("y:", "").replace("color:", ""));
-        carga.setTipo("cargaP");
-
+        carga.setValor(1 * Math.pow(10,-9));
+        
+        
         listaCargas.add(carga);
     }
 
@@ -86,16 +89,19 @@ public class AnalizadorSemantico {
 
         String [] cargas =carga.split(";");
         Carga carga2 = new Carga();
+        carga2.setTipo("carga");
         /*for (int i = 0; i < cargas.length; i++){
             System.out.println(cargas[i].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", ""));
         }*/
         carga2.setPosX(Integer.parseInt(cargas[0].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", "")));
         carga2.setPosY(Integer.parseInt(cargas[1].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", "")));
-        carga2.setValor(Integer.parseInt(cargas[2].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", "")));
+        
         carga2.setSigno(cargas[3].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", ""));
         carga2.setNomenclatura(cargas[4].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", ""));
+        carga2.setValor(Integer.parseInt(cargas[2].replace("x:", "").replace("y:", "").replace("color:", "").replace("v:", "").replace("t:", "").replace("n:", "")));
+        
         carga2.setColor(cargas[5].replace("x:", "").replace("y:", "").replace("color:", "".replace("v:", "").replace("t:", "").replace("n:", "")));
-        carga2.setTipo("carga");
+        
 
         listaCargas.add(carga2);
     }
