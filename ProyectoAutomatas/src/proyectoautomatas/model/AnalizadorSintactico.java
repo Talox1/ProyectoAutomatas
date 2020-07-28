@@ -22,6 +22,8 @@ public class AnalizadorSintactico {
     List<String> listaReglas = new ArrayList<String>();
     Stack<String> pila = new Stack<String>();
     Stack<String> pilaEntrada = new Stack<String>();
+    
+    String[] caracterInvalido = new String[2];
     boolean isValid = false;
     public AnalizadorSintactico(String entrada){
         this.entrada = entrada;
@@ -276,10 +278,15 @@ public class AnalizadorSintactico {
 
         if(!pila.peek().equals("$") && !pilaEntrada.isEmpty()) {
             System.out.println("Error... entrada no valida "+pila);
+            caracterInvalido[0] = pila.peek();
+            caracterInvalido[1] = pilaEntrada.peek();
             isValid = false;
+            
         }else if(!pilaEntrada.isEmpty()) {
             System.out.println("Error... entrada no valida "+pilaEntrada);
             isValid = false;
+            caracterInvalido[0] = pila.peek();
+            caracterInvalido[1] = pilaEntrada.peek();
         }else if(pilaEntrada.isEmpty() && pila.peek().equals("RESTOC")) {
             //System.out.println("57"+pila+"\t\t\t\t\t\t|"+pilaEntrada+"\t\t\t\t\t\t|RESTOC-->E");
             pila.pop();
@@ -296,6 +303,9 @@ public class AnalizadorSintactico {
     
     public boolean isEntradaValid(){
         return isValid;
+    }
+    public String[] getCaracterInvalido (){
+        return caracterInvalido;
     }
     
 }

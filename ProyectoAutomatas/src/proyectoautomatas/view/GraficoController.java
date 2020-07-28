@@ -32,6 +32,7 @@ import proyectoautomatas.model.Carga;
 
 public class GraficoController {
     Queue<Carga> listaCargas = new LinkedList<Carga>();
+    Queue<Carga> listaCargasAux2 = new LinkedList<Carga>();
     Queue<Circle> listCircle = new LinkedList<Circle>();
     
     private double [][] matrizCampoElectrico ;
@@ -73,8 +74,22 @@ public class GraficoController {
     }
 
     @FXML
-    void OnMouseClickedTablaResultados(MouseEvent event) {
-
+    void OnMouseClickedTablaResultados(MouseEvent event) throws IOException {
+        System.out.println("Cambiando vista a tabla resultados: lista vacia? "+listaCargas.isEmpty());
+        Stage stage = new Stage();
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("Tabla.fxml"));
+        Object carga = loader.load();
+        Parent root = (Parent) carga;
+        Scene scene = new Scene(root);            
+        TablaController tablaController = loader.<TablaController>getController();
+//        graficoController.setEntradaTexto(entradaTexto.getText());
+        
+        tablaController.setListCargas(this.listaCargasAux2);
+        
+        stage.setScene(scene);
+        stage.show();                                                                   
+        Stage stage1 = (Stage) auxBtn.getScene().getWindow();
+        stage1.close();
     }
 
     @FXML
@@ -87,14 +102,17 @@ public class GraficoController {
     }
     public void setListaCargas(Queue<Carga> listaCargas){
         this.listaCargas = listaCargas;
+        this.listaCargasAux2 = listaCargas;
         
     }
     public void dibujarCargas(){
         //System.out.println("grafico controller "+listaCargas);
-        while(!listaCargas.isEmpty()){
-            ellipse(listaCargas.peek().getPosX(), listaCargas.peek().getPosY(), 4, 4);
-            listaCargas.poll();
+        //System.out.println("graph contrller 112>>> is lista empt y "+listaCargas.isEmpty());
+        while(!this.listaCargasAux2.isEmpty()){
+            ellipse(this.listaCargasAux2.peek().getPosX(), this.listaCargasAux2.peek().getPosY(), 4, 4);
+            this.listaCargasAux2.poll();
         }
+        System.out.println("graph contrller 117>>> is lista empt y "+listaCargas.isEmpty());
             
     }
     
@@ -106,10 +124,12 @@ public class GraficoController {
         Circle circle2 = new Circle();
         Circle circle3 = new Circle();
         Circle circle4 = new Circle();
+        
+        //System.out.println("graph contrller 130>>> is lista empt y "+listaCargas.isEmpty());
         do {
             
             circle = new Circle();
-            circle.setFill(getColor(listaCargas.peek().getColor()));
+            circle.setFill(getColor(this.listaCargasAux2.peek().getColor()));
             circle.setStroke(Color.TRANSPARENT);
             circle.setCenterX(xm+dx);
             circle.setCenterY(ym+dy);
@@ -119,7 +139,7 @@ public class GraficoController {
             
             //setPixel(xm+dx, ym+dy); /* I. Quadrant */
             circle2 = new Circle();
-            circle2.setFill(getColor(listaCargas.peek().getColor()));
+            circle2.setFill(getColor(this.listaCargasAux2.peek().getColor()));
             circle2.setStroke(Color.TRANSPARENT);
             circle2.setCenterX(xm-dx);
             circle2.setCenterY(ym+dy);
@@ -128,7 +148,7 @@ public class GraficoController {
             anchorPane.getChildren().addAll(circle2);
             //setPixel(xm-dx, ym+dy); /* II. Quadrant */
             circle3 = new Circle();
-            circle3.setFill(getColor(listaCargas.peek().getColor()));
+            circle3.setFill(getColor(this.listaCargasAux2.peek().getColor()));
             circle3.setStroke(Color.TRANSPARENT);
             circle3.setCenterX(xm-dx);
             circle3.setCenterY(ym-dy);
@@ -137,7 +157,7 @@ public class GraficoController {
             anchorPane.getChildren().addAll(circle3);
             //setPixel(xm-dx, ym-dy); /* III. Quadrant */
             circle4 = new Circle();
-            circle4.setFill(getColor(listaCargas.peek().getColor()));
+            circle4.setFill(getColor(this.listaCargasAux2.peek().getColor()));
             circle4.setStroke(Color.TRANSPARENT);
             circle4.setCenterX(xm+dx);
             circle4.setCenterY(ym-dy);
@@ -150,6 +170,7 @@ public class GraficoController {
             if (e2 <  (2*dx+1)*b2) { dx++; err += (2*dx+1)*b2; }
             if (e2 > -(2*dy-1)*a2) { dy--; err -= (2*dy-1)*a2; }
         } while (dy >= 0);
+        //System.out.println("graph contrller 175>>> is lista empt y "+listaCargas.isEmpty());
     }
     
     
@@ -197,14 +218,14 @@ public class GraficoController {
         
         for(int y = 0 ; y < filas; y++){
             for (int x = 0 ; x < columnas; x++){
-                System.out.print("|"+df.format(matrizCampoElectrico[y][x]));
+                //System.out.print("|"+df.format(matrizCampoElectrico[y][x]));
                 if(matrizCampoElectrico[x][y] > valorMax)
                     valorMax = matrizCampoElectrico[y][x];
                 if(matrizCampoElectrico[y][x] < valorMin)
                     valorMin = matrizCampoElectrico[y][x];
             }
             //System.out.print("\tmayor "+valorMax+" minimo "+valorMin);
-            System.out.println("\n");
+            //System.out.println("\n");
         }
 //        System.out.println("================================================================");
         double rangoValores = (valorMax - valorMin)/4; // para saber los limites de los 4 valores bajo,medio bajo, medio alto y alto
@@ -217,10 +238,10 @@ public class GraficoController {
         System.out.println("medio alto = "+(valorMin + ( rangoValores * 2 ) )+" < "+(valorMin + ( rangoValores * 3 ) ));
         System.out.println("alto = "+(valorMin + ( rangoValores * 3 ) )+" < "+valorMax);
         
-        for(int y = 0 ; y < filas; y++){
+        for(int y = filas -1 ; y >= 0; y--){
             //System.out.println("======================================================");
             //System.out.println("fila >>>"+y);
-            for (int x = 0 ; x < columnas; x++){
+            for (int x = columnas -1; x >= 0; x--){
                 //System.out.println("columna>>>"+x);
                 //System.out.print("|"+matrizCampoElectrico[y][x]);
                 
